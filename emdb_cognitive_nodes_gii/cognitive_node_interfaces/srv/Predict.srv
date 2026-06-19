@@ -1,0 +1,4 @@
+cognitive_node_interfaces/Episode[] input_episodes
+---
+cognitive_node_interfaces/Episode[] output_episodes
+bool valid

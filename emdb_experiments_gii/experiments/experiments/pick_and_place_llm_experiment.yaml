@@ -1,0 +1,206 @@
+Experiment:
+    name: main_loop
+    class_name: cognitive_processes.main_loop.MainLoop
+    new_executor: True
+    threads: 2
+    parameters: 
+        iterations: 6000
+        trials: 50
+        subgoals: False
+
+Control:
+    id: pick_and_place_simulator
+    control_topic: /main_loop/control
+    control_msg: cognitive_processes_interfaces.msg.ControlMsg
+    episodes_topic: /main_loop/episodes
+    episodes_msg: cognitive_node_interfaces.msg.Episode
+    executed_policy_service: /simulator/executed_policy
+    executed_policy_msg: cognitive_node_interfaces.srv.Policy
+    world_reset_service: /simulator/world_reset
+    world_reset_msg: cognitive_processes_interfaces.srv.WorldReset
+LTM:
+    Files:
+        -
+            id: goodness
+            class: core.file.FileGoodness
+            file: goodness.txt
+        -
+            id: pnodes_success
+            class: core.file.FilePNodesSuccess
+            file: pnodes_success.txt
+        -
+            id: pnodes_content
+            class: core.file.FilePNodesContent
+            file: pnodes_content.txt
+        -
+            id: trials
+            class: core.file.FileTrialsSuccess
+            file: trials.txt
+    Connectors:
+        -
+            data: Space
+            default_class: cognitive_nodes.space.Space
+        -
+            data: Perception
+            default_class: cognitive_nodes.perception.Perception
+        -
+            data: PNode
+            default_class: cognitive_nodes.pnode.PNode
+            parameters:
+                space_class: llm_planner.space.SemanticSpace      
+        -
+            data: CNode
+            default_class: cognitive_nodes.cnode.CNode
+        -
+            data: Goal
+            default_class: cognitive_nodes.goal.GoalLearnedSpace
+        -
+            data: WorldModel
+            default_class: cognitive_nodes.world_model.WorldModel
+        -
+            data: Policy
+            default_class: cognitive_nodes.policy.PolicyBlocking
+
+    Nodes:
+        Perception:
+            -
+                name: grasped_object
+                class_name: llm_planner.perception.SemanticPerception
+                parameters:
+                    default_msg: std_msgs.msg.String
+                    default_topic: /simulator/sensor/grasped_object
+            -
+                name: objects
+                class_name: llm_planner.perception.SemanticPerception
+                parameters:
+                    default_msg: llm_planner_interfaces.msg.ObjectListMsg
+                    default_topic: /simulator/sensor/objects
+            -
+                name: progress_object_in_place
+                class_name: llm_planner.perception.SemanticPerception
+                parameters:
+                    default_msg: std_msgs.msg.Float32
+                    default_topic: /simulator/sensor/progress
+
+        WorldModel:
+            -
+                name: PICK_AND_PLACE
+                class_name: cognitive_nodes.world_model.WorldModel
+                
+        RobotPurpose:
+            -
+                name: object_in_place_mission
+                class_name: cognitive_nodes.robot_purpose.RobotPurpose
+                parameters:
+                    weight: 1.0
+                    drive_id: 'object_in_place_drive'
+                    purpose_type: 'Mission'
+                    terminal: True
+
+        Drive:
+            -
+                name: object_in_place_drive
+                class_name: cognitive_nodes.drive.DriveExponential
+                parameters:
+                    input_topic: /simulator/sensor/progress
+                    input_msg: std_msgs.msg.Float32
+                    min_eval: 0.9
+                    neighbors: [{"name": "object_in_place_mission", "node_type": "RobotPurpose"}]
+
+        Goal:
+            -
+                name: object_in_place_goal
+                class_name: cognitive_nodes.goal.GoalMotiven
+                parameters:
+                    neighbors: [{"name": "object_in_place_drive", "node_type": "Drive"}]
+            -
+                name: screwdriver_in_toolbox_goal
+                class_name: cognitive_nodes.goal.GoalMotiven
+                parameters:
+                    neighbors: [{"name": "object_in_place_drive", "node_type": "Drive"}]
+
+        PNode:
+            -
+                name: screwdriver_object_pnode
+                class_name: llm_planner.pnode.SemanticPNode
+                parameters:
+                    target_object: "screwdriver"
+
+
+        CNode:
+            -
+                name: screwdriver_object_cnode
+                class_name: cognitive_nodes.cnode.CNode
+                parameters:
+                    neighbors: [{"name": "screwdriver_in_toolbox_goal", "node_type": "Goal"}, 
+                               {"name": "PICK_AND_PLACE", "node_type": "WorldModel"}, 
+                               {"name": "screwdriver_object_pnode", "node_type": "PNode"}]
+
+        Policy:
+            -
+                name: grasp_object
+                class_name: cognitive_nodes.policy.PolicyBlocking
+                parameters:
+                    service_msg: llm_planner_interfaces.srv.GraspObject
+                    service_name: /simulator/grasp_object
+            -
+                name: release_object
+                class_name: cognitive_nodes.policy.PolicyBlocking
+                parameters:
+                    service_msg: llm_planner_interfaces.srv.ReleaseObject
+                    service_name: /simulator/release_object
+            -
+                name: llm_planner_policy
+                class_name: llm_planner.policy_llm_planner.PolicyLLMPlanner
+                parameters:
+                    llm_model_name: "llama3.2"
+                    neighbors: [{"name": "screwdriver_object_cnode", "node_type": "CNode"}]
+                    ltm_id: ltm_0
+
+        
+
+
+DiscreteEventSimulator:
+    Perceptions:
+        -
+            name: grasped_object
+            perception_topic: /simulator/sensor/grasped_object
+            perception_msg: std_msgs.msg.String
+        -
+            name: objects
+            perception_topic: /simulator/sensor/objects
+            perception_msg: llm_planner_interfaces.msg.ObjectListMsg
+        -
+            name: progress_object_in_place
+            perception_topic: /simulator/sensor/progress
+            perception_msg: std_msgs.msg.Float32
+
+    Objects:
+        - 
+            id: 'screwdriver'
+            location: 'table'
+            home: 'toolbox'
+            subparts:
+                - 'handle'
+                - 'shaft' 
+        - 
+            id: 'banana'
+            location: 'table'
+            home: 'trash'
+            subparts:
+                - 'body'
+        - 
+            id: 'mug'
+            location: 'table'
+            home: 'shelf'
+            subparts:
+                - 'handle'
+                - 'body'
+        - 
+            id: 'scissors'
+            location: 'table'
+            home: 'toolbox'
+            subparts: 
+                - 'handle'
+                - 'blade'
+        
