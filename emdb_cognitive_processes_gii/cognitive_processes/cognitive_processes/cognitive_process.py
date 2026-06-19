@@ -9,7 +9,8 @@ from rclpy.time import Time
 
 from cognitive_nodes.episode import Episode, Action, action_obj_to_msg
 from core.service_client import ServiceClient
-from core.utils import perception_dict_to_msg, perception_msg_to_dict, actuation_dict_to_msg, actuation_msg_to_dict, class_from_classname
+# from core.utils import perception_dict_to_msg, perception_msg_to_dict, actuation_dict_to_msg, actuation_msg_to_dict, class_from_classname
+from core.utils import actuation_dict_to_msg, actuation_msg_to_dict, class_from_classname
 from cognitive_nodes.episode import reward_dict_to_msg
 
 from std_msgs.msg import String
@@ -17,6 +18,8 @@ from core_interfaces.srv import SetChangesTopic, GetNodeFromLTM, UpdateNeighbor,
 from cognitive_node_interfaces.msg import Episode as EpisodeMsg
 from cognitive_node_interfaces.msg import PerceptionStamped, Activation
 from cognitive_node_interfaces.srv import GetActivation, AddPoint, IsSatisfied, GetReward, Execute
+
+from llm_planner.utils import perception_dict_to_msg, perception_msg_to_dict
 
 class CognitiveProcess(Node):
     """

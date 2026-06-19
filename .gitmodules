@@ -20,5 +20,5 @@
 	branch = main
 [submodule "llm_planner_isir"]
 	path = llm_planner_isir
-	url = https://github.com/iinnesperado/llm_planner_isir
+	url = https://github.com/iinnesperado/llm_planner_isir.git
 	branch = main
