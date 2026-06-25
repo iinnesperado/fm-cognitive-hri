@@ -30,7 +30,9 @@ from cognitive_processes_interfaces.msg import ControlMsg
 from cognitive_node_interfaces.msg import Episode as EpisodeMsg
 from std_msgs.msg import String
 
-from core.utils import perception_dict_to_msg, perception_msg_to_dict, actuation_dict_to_msg, actuation_msg_to_dict, class_from_classname
+from core.utils import perception_msg_to_dict, actuation_dict_to_msg, actuation_msg_to_dict, class_from_classname #perception_dict_to_msg
+
+from llm_planner.utils import perception_dict_to_msg
 
 
 class MainLoop(CognitiveProcess):

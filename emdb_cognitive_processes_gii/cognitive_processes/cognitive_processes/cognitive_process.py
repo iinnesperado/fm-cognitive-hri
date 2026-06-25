@@ -345,9 +345,9 @@ class CognitiveProcess(Node):
                 self.perception_cache[sensor]["flag"].wait()
             sensing[sensor] = copy(self.perception_cache[sensor]["data"])
             self.perception_cache[sensor]["flag"].clear()
-            self.get_logger().info("Processing perception: " + str(sensor))
+            self.get_logger().debug("Processing perception: " + str(sensor))
 
-        self.get_logger().info("DEBUG Read Perceptions: " + str(sensing))
+        self.get_logger().debug("DEBUG Read Perceptions: " + str(sensing))
         return sensing
 
     def receive_perception_callback(self, msg):
@@ -360,6 +360,7 @@ class CognitiveProcess(Node):
         :type msg: cognitive_node_interfaces.msg.Perception
         """
         perception_dict = perception_msg_to_dict(msg.perception)
+        # self.get_logger().info(f"Receive perception dict : {perception_dict}")
 
         for sensor in perception_dict.keys():
             if sensor in self.perception_cache:
@@ -416,6 +417,7 @@ class CognitiveProcess(Node):
         self.get_logger().info("Updating activations...")
         self.semaphore.acquire()
         self.activation_time=self.get_clock().now().nanoseconds
+        self.get_logger().debug(f"DEBUG: updating activation self.activation_time : {self.activation_time}")
         for node in self.activation_inputs:
             self.activation_inputs[node]['flag'].clear()
 
@@ -496,6 +498,7 @@ class CognitiveProcess(Node):
         if self.activation_logs:
             self.get_logger().debug(f'Activation received: {node_type} {node_name} - Activation: {activation} - Timestamp: {timestamp} / Activation Time: {self.activation_time}')
         
+        self.get_logger().debug(f"DEBUG {node_type} {node_name}: Reading activation timestamp : {timestamp}")
         if timestamp > self.activation_time :            
             self.activation_inputs[node_name]['flag'].set()
         elif timestamp < old_timestamp:
