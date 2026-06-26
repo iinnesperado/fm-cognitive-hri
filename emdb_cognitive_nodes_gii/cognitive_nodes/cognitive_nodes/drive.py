@@ -4,12 +4,14 @@ from rclpy.node import Node
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.time import Time
 
-from core.utils import class_from_classname, perception_msg_to_dict
+from core.utils import class_from_classname #perception_msg_to_dict
 from core.cognitive_node import CognitiveNode
 from core.service_client import ServiceClientAsync
 from cognitive_node_interfaces.srv import SetActivation, Evaluate, GetSuccessRate, GetReward, GetSatisfaction, GetActivation
 from cognitive_node_interfaces.msg import Evaluation
 from builtin_interfaces.msg import Time as TimeMsg
+
+from llm_planner.utils import perception_msg_to_dict
 
 from math import exp, isclose
 import re

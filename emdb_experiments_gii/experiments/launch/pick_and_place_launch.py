@@ -36,7 +36,7 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
     )
 
     simulator_node = Node(
-        package="llm_planner_simulator",
+        package="workstation_simulator",
         executable="pick_and_place_simulator",
         output="screen",
         parameters=[

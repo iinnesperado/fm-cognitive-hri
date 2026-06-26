@@ -138,17 +138,53 @@ LTM:
 
         Policy:
             -
-                name: grasp_object
+                name: grasp_mug_body
                 class_name: cognitive_nodes.policy.PolicyBlocking
                 parameters:
-                    service_msg: llm_planner_interfaces.srv.GraspObject
-                    service_name: /simulator/grasp_object
+                    service_msg: cognitive_node_interfaces.srv.Policy
+                    service_name: /simulator/executed_policy
+            - 
+                name: grasp_screwdriver_handle
+                class_name: cognitive_nodes.policy.PolicyBlocking
+                parameters:
+                    service_msg: cognitive_node_interfaces.srv.Policy
+                    service_name: /simulator/executed_policy
             -
-                name: release_object
+                name: grasp_banana_body
                 class_name: cognitive_nodes.policy.PolicyBlocking
                 parameters:
-                    service_msg: llm_planner_interfaces.srv.ReleaseObject
-                    service_name: /simulator/release_object
+                    service_msg: cognitive_node_interfaces.srv.Policy
+                    service_name: /simulator/executed_policy
+            -
+                name: grasp_scissors_handle
+                class_name: cognitive_nodes.policy.PolicyBlocking
+                parameters:
+                    service_msg: cognitive_node_interfaces.srv.Policy
+                    service_name: /simulator/executed_policy
+            -
+                name: release_on_table
+                class_name: cognitive_nodes.policy.PolicyBlocking
+                parameters:
+                    service_msg: cognitive_node_interfaces.srv.Policy
+                    service_name: /simulator/executed_policy
+            -
+                name: release_on_shelf
+                class_name: cognitive_nodes.policy.PolicyBlocking
+                parameters:
+                    service_msg: cognitive_node_interfaces.srv.Policy
+                    service_name: /simulator/executed_policy
+            -
+                name: release_in_trash
+                class_name: cognitive_nodes.policy.PolicyBlocking
+                parameters:
+                    service_msg: cognitive_node_interfaces.srv.Policy
+                    service_name: /simulator/executed_policy
+            -
+                name: release_in_toolbox
+                class_name: cognitive_nodes.policy.PolicyBlocking
+                parameters:
+                    service_msg: cognitive_node_interfaces.srv.Policy
+                    service_name: /simulator/executed_policy
             -
                 name: llm_planner_policy
                 class_name: llm_planner.policy_llm_planner.PolicyLLMPlanner

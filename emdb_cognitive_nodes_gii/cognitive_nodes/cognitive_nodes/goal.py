@@ -16,11 +16,13 @@ from cognitive_nodes.space import PointBasedSpace
 from simulators_interfaces.srv import ObjectTooFar, CalculateClosestPosition, ObjectPickableWithTwoHands
 from builtin_interfaces.msg import Time as TimeMsg
 
-from core.utils import class_from_classname, perception_dict_to_msg, perception_msg_to_dict, separate_perceptions, compare_perceptions
+from core.utils import class_from_classname, perception_dict_to_msg, separate_perceptions, compare_perceptions #perception_msg_to_dict
 from math import isclose
 import numpy
 
 import random
+
+from llm_planner.utils import perception_msg_to_dict
 
 class Goal(CognitiveNode):
     """
