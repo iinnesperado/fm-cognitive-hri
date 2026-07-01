@@ -417,7 +417,7 @@ class CognitiveProcess(Node):
         self.get_logger().info("Updating activations...")
         self.semaphore.acquire()
         self.activation_time=self.get_clock().now().nanoseconds
-        self.get_logger().debug(f"DEBUG: updating activation self.activation_time : {self.activation_time}")
+        # self.get_logger().debug(f"DEBUG: updating activation self.activation_time : {self.activation_time}")
         for node in self.activation_inputs:
             self.activation_inputs[node]['flag'].clear()
 
@@ -498,7 +498,6 @@ class CognitiveProcess(Node):
         if self.activation_logs:
             self.get_logger().debug(f'Activation received: {node_type} {node_name} - Activation: {activation} - Timestamp: {timestamp} / Activation Time: {self.activation_time}')
         
-        self.get_logger().debug(f"DEBUG {node_type} {node_name}: Reading activation timestamp : {timestamp}")
         if timestamp > self.activation_time :            
             self.activation_inputs[node_name]['flag'].set()
         elif timestamp < old_timestamp:
