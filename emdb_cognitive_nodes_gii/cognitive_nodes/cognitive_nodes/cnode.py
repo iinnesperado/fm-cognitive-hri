@@ -3,7 +3,9 @@ import rclpy
 from core.cognitive_node import CognitiveNode
 from core.service_client import ServiceClient, ServiceClientAsync
 from cognitive_node_interfaces.srv import GetActivation
-from core.utils import perception_dict_to_msg
+# from core.utils import perception_dict_to_msg
+
+from llm_planner.utils import perception_dict_to_msg
 
 
 class CNode(CognitiveNode):
@@ -53,6 +55,7 @@ class CNode(CognitiveNode):
                     self.node_clients[service_name] = ServiceClientAsync(
                         self, GetActivation, service_name, self.cbgroup_client
                     )
+                # self.get_logger().info(f"DEBUG CNODE: Waiting for activation of {name}...")
                 activation = await self.node_clients[service_name].send_request_async(
                     perception=perception_msg
                 )
@@ -75,6 +78,7 @@ class CNode(CognitiveNode):
                     self.node_type + " activation for " + self.name + " = " + str(self.activation)
                 )
         else:
+            # self.get_logger().info(f"DEBUG CNODE: Waiting for activation of cnode {self.name}...")
             self.calculate_activation_prod(activation_list)
 
         return self.activation

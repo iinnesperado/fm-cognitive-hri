@@ -5,9 +5,11 @@ from collections import deque
 
 from core.cognitive_node import CognitiveNode
 from cognitive_nodes.space import PointBasedSpace
-from core.utils import class_from_classname, perception_msg_to_dict, separate_perceptions
+from core.utils import class_from_classname, separate_perceptions #perception_msg_to_dict
 from cognitive_node_interfaces.srv import AddPoint, AddPoints, SendSpace, ContainsSpace, SaveModel
 from cognitive_node_interfaces.msg import Perception, PerceptionStamped, SuccessRate
+
+from llm_planner.utils import perception_msg_to_dict
 
 class PNode(CognitiveNode):
     """

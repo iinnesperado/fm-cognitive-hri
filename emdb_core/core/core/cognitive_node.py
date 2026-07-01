@@ -10,7 +10,9 @@ from core.service_client import ServiceClient, ServiceClientAsync
 from core_interfaces.srv import AddNodeToLTM, DeleteNodeFromLTM, UpdateNeighbor, CreateNode
 from cognitive_node_interfaces.srv import GetActivation, GetInformation, SetActivationTopic, AddNeighbor, DeleteNeighbor
 from cognitive_node_interfaces.msg import Activation
-from core.utils import perception_msg_to_dict
+# from core.utils import perception_msg_to_dict
+
+from llm_planner.utils import perception_msg_to_dict
 
 class CognitiveNode(Node):
     """
@@ -206,7 +208,7 @@ class CognitiveNode(Node):
         if len(node_activations)!=0:
             activation=numpy.prod(node_activations)
         else:
-            self.get_logger().debug(f'Node activation list empty!!')
+            self.get_logger().info(f'Node activation list empty!!')
             activation=0.0
         self.activation.activation=float(activation)
         self.activation.timestamp=timestamp
