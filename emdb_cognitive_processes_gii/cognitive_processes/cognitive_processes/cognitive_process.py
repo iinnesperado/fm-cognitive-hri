@@ -496,7 +496,7 @@ class CognitiveProcess(Node):
         self.LTM_cache[node_type][node_name]['activation_timestamp']=timestamp
 
         if self.activation_logs:
-            self.get_logger().debug(f'Activation received: {node_type} {node_name} - Activation: {activation} - Timestamp: {timestamp} / Activation Time: {self.activation_time}')
+            self.get_logger().info(f'Activation received: {node_type} {node_name} - Activation: {activation} - Timestamp: {timestamp} / Activation Time: {self.activation_time}')
         
         if timestamp > self.activation_time :            
             self.activation_inputs[node_name]['flag'].set()

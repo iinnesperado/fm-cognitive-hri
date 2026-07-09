@@ -81,12 +81,12 @@ LTM:
                 parameters:
                     default_msg: std_msgs.msg.Float32
                     default_topic: /simulator/sensor/progress
-            -
-                name: robot_vision
-                class_name: llm_planner.perception.SemanticPerception
-                parameters:
-                    default_msg: sensor_msgs.msg.Image
-                    default_topic: /simulator/sensor/robot_vision
+            # -
+            #     name: robot_vision
+            #     class_name: llm_planner.perception.SemanticPerception
+            #     parameters:
+            #         default_msg: sensor_msgs.msg.Image
+            #         default_topic: /simulator/sensor/robot_vision
 
         WorldModel:
             -
@@ -132,15 +132,15 @@ LTM:
                 parameters:
                     neighbors: [{"name": "object_in_place_drive", "node_type": "Drive"}]
             -
-                name: screwdriver_in_toolbox_goal
-                class_name: cognitive_nodes.goal.GoalMotiven
-                parameters:
-                    neighbors: [{"name": "object_in_place_drive", "node_type": "Drive"}]
-            -
                 name: user_alignment_goal
                 class_name: cognitive_nodes.goal.GoalMotiven
                 parameters:
                     neighbors: [{"name": "user_alignment_drive", "node_type": "Drive"}]
+            # -
+            #     name: screwdriver_in_toolbox_goal
+            #     class_name: cognitive_nodes.goal.GoalMotiven
+            #     parameters:
+            #         neighbors: [{"name": "object_in_place_drive", "node_type": "Drive"}]
 
         PNode:
             -
@@ -148,20 +148,13 @@ LTM:
                 class_name: dummy_nodes.dummy_pnodes.ActivatedDummyPNode
                 parameters:
                     space_class: cognitive_nodes.space.ActivatedDummySpace
-            -
-                name: screwdriver_object_pnode
-                class_name: llm_planner.pnode.SemanticPNode
-                parameters:
-                    target_object: "screwdriver"
+            # -
+            #     name: screwdriver_object_pnode
+            #     class_name: llm_planner.pnode.SemanticPNode
+            #     parameters:
+            #         target_object: "screwdriver"
 
         CNode:
-            -
-                name: screwdriver_object_cnode
-                class_name: cognitive_nodes.cnode.CNode
-                parameters:
-                    neighbors: [{"name": "screwdriver_in_toolbox_goal", "node_type": "Goal"}, 
-                               {"name": "PICK_AND_PLACE", "node_type": "WorldModel"}, 
-                               {"name": "screwdriver_object_pnode", "node_type": "PNode"}]
             -
                 name: user_alignment_cnode
                 class_name: cognitive_nodes.cnode.CNode
@@ -169,6 +162,13 @@ LTM:
                     neighbors: [{"name": "user_alignment_goal", "node_type": "Goal"}, 
                                {"name": "PICK_AND_PLACE", "node_type": "WorldModel"}, 
                                {"name": "user_alignment_pnode", "node_type": "PNode"}]
+            # -
+            #     name: screwdriver_object_cnode
+            #     class_name: cognitive_nodes.cnode.CNode
+            #     parameters:
+            #         neighbors: [{"name": "screwdriver_in_toolbox_goal", "node_type": "Goal"}, 
+            #                    {"name": "PICK_AND_PLACE", "node_type": "WorldModel"}, 
+            #                    {"name": "screwdriver_object_pnode", "node_type": "PNode"}]
 
         Policy:
             -
@@ -223,14 +223,15 @@ LTM:
                 name: user_alignment_policy
                 class_name: user_alignment.user_alignment.PolicyUserAlignment
                 parameters:
+                    neighbors: [{"name": "user_alignment_cnode", "node_type": "CNode"}]
                     ltm_id: ltm_0
-                    prompts: ???
+                    # prompts: ???
             -
                 name: llm_planner_policy
                 class_name: llm_planner.policy_llm_planner.PolicyLLMPlanner
                 parameters:
                     llm_model_name: "llama3.2"
-                    neighbors: [{"name": "llm_planner_cnode", "node_type": "CNode"}]
+                    # neighbors: [{"name": "llm_planner_cnode", "node_type": "CNode"}]
                     ltm_id: ltm_0
                     prompts :
                         high_level_prompt: |
