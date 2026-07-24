@@ -233,6 +233,7 @@ LTM:
                     llm_model_name: "llama3.2"
                     # neighbors: [{"name": "llm_planner_cnode", "node_type": "CNode"}]
                     ltm_id: ltm_0
+                    executed_primitive_service: /simulator/executed_policy
                     prompts :
                         high_level_prompt: |
                             You are in charge of a fixed robotic arm ending in a gripper. Your task is the following: {task}
