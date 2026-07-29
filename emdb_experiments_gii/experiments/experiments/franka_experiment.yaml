@@ -73,8 +73,8 @@ LTM:
                 name: objects
                 class_name: llm_planner.perception.SemanticPerception
                 parameters:
-                    default_msg: llm_planner_interfaces.msg.ObjectListMsg
-                    default_topic: /simulator/sensor/objects
+                    default_msg: sensor_msgs.msg.Image
+                    default_topic: /camera/rgb
             # -
             #     name: progress_object_in_place
             #     class_name: llm_planner.perception.SemanticPerception
@@ -109,57 +109,32 @@ LTM:
                     weight: 1.0
                     drive_id: 'user_alignment_drive'
                     purpose_type: 'Need'
-            -
-                name: llm_planner_need
-                class_name: cognitive_nodes.robot_purpose.RobotPurpose
-                parameters:
-                    weight: 1.0
-                    drive_id: 'llm_planner_drive'
-                    purpose_type: 'Need'
 
         Drive:
             -
                 name: object_in_place_drive
                 class_name: dummy_nodes.dummy_drive.DriveDummy
                 parameters:
+                    # input_topic: /simulator/sensor/progress
+                    # input_msg: std_msgs.msg.Float32
+                    # min_eval: 0.9
                     neighbors: [{"name": "object_in_place_mission", "node_type": "RobotPurpose"}]
             -
                 name: user_alignment_drive
                 class_name: user_alignment.user_alignment.DriveUserAlignment
                 parameters:
                     neighbors: [{"name": "user_alignment_need", "node_type": "RobotPurpose"}]
-            -
-                name: llm_planner_drive
-                class_name: llm_planner.llm_planner.DriveLLMPlanner
-                parameters:
-                    ltm_id: ltm_0
-                    neighbors: [{"name": "llm_planner_need", "node_type": "RobotPurpose"}]
 
         Goal:
-            # -
-            #     name: object_in_place_goal
-            #     class_name: cognitive_nodes.goal.GoalMotiven
-            #     parameters:
-            #         neighbors: [{"name": "object_in_place_drive", "node_type": "Drive"}]
             -
                 name: user_alignment_goal
                 class_name: cognitive_nodes.goal.GoalMotiven
                 parameters:
                     neighbors: [{"name": "user_alignment_drive", "node_type": "Drive"}]
-            -
-                name: llm_planner_goal
-                class_name: cognitive_nodes.goal.GoalMotiven
-                parameters:
-                    neighbors: [{"name": "llm_planner_drive", "node_type": "Drive"}]
 
         PNode:
             -
                 name: user_alignment_pnode
-                class_name: dummy_nodes.dummy_pnodes.ActivatedDummyPNode
-                parameters:
-                    space_class: cognitive_nodes.space.ActivatedDummySpace
-            -
-                name: llm_planner_pnode
                 class_name: dummy_nodes.dummy_pnodes.ActivatedDummyPNode
                 parameters:
                     space_class: cognitive_nodes.space.ActivatedDummySpace
@@ -172,13 +147,6 @@ LTM:
                     neighbors: [{"name": "user_alignment_goal", "node_type": "Goal"}, 
                                {"name": "PICK_AND_PLACE", "node_type": "WorldModel"}, 
                                {"name": "user_alignment_pnode", "node_type": "PNode"}]
-            -
-                name: llm_planner_cnode
-                class_name: cognitive_nodes.cnode.CNode
-                parameters:
-                    neighbors: [{"name": "llm_planner_goal", "node_type": "Goal"}, 
-                               {"name": "PICK_AND_PLACE", "node_type": "WorldModel"}, 
-                               {"name": "llm_planner_pnode", "node_type": "PNode"}]
 
         Policy:
             -
@@ -259,33 +227,33 @@ LTM:
                             Skills:
                             Here are the functions and skills, with examples of the syntax:
 
-                            grasp_mug_body
+                            grasp_mug_body()
                                 """Grasp a mug from the body."""
 
-                            grasp_screwdriver_handle
+                            grasp_screwdriver_handle()
                                 """Grasp a screwdriver from the handle"""
 
-                            grasp_banana_body
+                            grasp_banana_body()
                                 """Grasp a banana from the body"""
 
-                            grasp_scissors_handle
+                            grasp_scissors_handle()
                                 """Grasp scissors from the handle"""
 
-                            release_at_table
+                            release_at_table()
                                 """Go to the pose for releasing an object in location = table"""
 
-                            release_at_trash
+                            release_at_trash()
                                 """Go to the pose for releasing an object in location = trash"""
 
-                            release_at_shelf
+                            release_at_shelf()
                                 """Go to the pose for releasing an object in location = shelf"""
 
-                            release_at_toolbox
+                            release_at_toolbox()
                                 """Go to the pose for releasing an object in location = toolbox"""
 
                             Examples of syntax: 
-                                - grasp_scissors_handle
-                                - release_at_shelf
+                                - grasp_scissors_handle()
+                                - release_at_shelf()
 
 
                             The task and the plan:
@@ -320,7 +288,7 @@ DiscreteEventSimulator:
         #     perception_msg: std_msgs.msg.Float32
         -
             name: robot_vision
-            perception_topic: /simulator/sensor/robot_vision
+            perception_topic: /camera/rgb
             perception_msg: sensor_msgs.msg.Image
 
     Objects:
