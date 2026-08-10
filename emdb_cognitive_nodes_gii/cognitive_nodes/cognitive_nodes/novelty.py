@@ -9,7 +9,7 @@ from cognitive_nodes.drive import Drive
 from cognitive_nodes.goal import Goal
 from cognitive_nodes.policy import Policy, PolicyBlocking
 from core.service_client import ServiceClient, ServiceClientAsync
-from core.utils import actuation_dict_to_msg, perception_msg_to_dict
+from core.utils import actuation_dict_to_msg #, perception_msg_to_dict
 
 from std_msgs.msg import String
 from core_interfaces.srv import GetNodeFromLTM

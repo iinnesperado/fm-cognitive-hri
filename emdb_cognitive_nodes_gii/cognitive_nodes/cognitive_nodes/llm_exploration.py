@@ -12,7 +12,7 @@ from cognitive_nodes.drive import Drive
 from cognitive_nodes.goal import Goal
 from cognitive_nodes.policy import Policy, PolicyBlocking
 from core.service_client import ServiceClient, ServiceClientAsync
-from core.utils import actuation_dict_to_msg, perception_msg_to_dict, actuation_msg_to_dict, EncodableDecodableEnum
+from core.utils import actuation_dict_to_msg, actuation_msg_to_dict, EncodableDecodableEnum #, perception_msg_to_dict
 
 from std_msgs.msg import String
 from core_interfaces.srv import GetNodeFromLTM
@@ -20,6 +20,8 @@ from cognitive_node_interfaces.srv import Execute, Predict
 from cognitive_node_interfaces.msg import Episode as EpisodeMsg
 from cognitive_processes_interfaces.msg import ControlMsg
 from simulators.pump_panel_sim_discrete import PumpObjects
+
+from llm_planner.utils import perception_msg_to_dict
 
 class DriveLLMExploration(Drive):
     """

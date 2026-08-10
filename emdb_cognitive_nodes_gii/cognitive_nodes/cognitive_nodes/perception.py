@@ -5,7 +5,10 @@ from math import isclose, cos, sin, pi
 from core.cognitive_node import CognitiveNode
 from cognitive_node_interfaces.srv import SetActivation, SetInputs
 from cognitive_node_interfaces.msg import PerceptionStamped
-from core.utils import class_from_classname, perception_dict_to_msg
+from core.utils import class_from_classname #, perception_dict_to_msg
+
+from llm_planner.utils import perception_dict_to_msg
+
 
 import random
 

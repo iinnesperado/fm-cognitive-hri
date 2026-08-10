@@ -5,7 +5,7 @@ from copy import deepcopy
 from rclpy.time import Time
 
 from core.service_client import ServiceClientAsync
-from core.utils import perception_dict_to_msg
+# from core.utils import perception_dict_to_msg
 from cognitive_nodes.episode import Episode, Action, episode_msg_to_obj, episode_obj_to_msg, episode_obj_list_to_msg_list
 from cognitive_nodes.episodic_buffer import EpisodicBuffer
 from cognitive_nodes.drive import Drive
@@ -14,6 +14,7 @@ from cognitive_nodes.utils import LTMSubscription, EpisodeSubscription
 
 from cognitive_node_interfaces.srv import AddPoints, AddTrace
 
+from llm_planner.utils import perception_dict_to_msg
 
 class ModelCreationMixin(LTMSubscription, EpisodeSubscription):
     def configure_model_creation(self, episode_topic, episode_msg):

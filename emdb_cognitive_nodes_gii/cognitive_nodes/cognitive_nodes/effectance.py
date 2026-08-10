@@ -14,8 +14,10 @@ from std_msgs.msg import String
 from core_interfaces.srv import GetNodeFromLTM, CreateNode, UpdateNeighbor
 from cognitive_node_interfaces.msg import SuccessRate
 from cognitive_node_interfaces.srv import GetActivation, SendSpace, GetEffects, ContainsSpace
-from core.utils import perception_dict_to_msg, perception_msg_to_dict, compare_perceptions
+from core.utils import compare_perceptions #, perception_dict_to_msg, perception_msg_to_dict
 from cognitive_nodes.utils import PNodeSuccess, EpisodeSubscription
+
+from llm_planner.utils import perception_dict_to_msg, perception_msg_to_dict
 
 
 
