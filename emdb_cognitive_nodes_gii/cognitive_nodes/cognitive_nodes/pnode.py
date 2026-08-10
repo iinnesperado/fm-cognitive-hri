@@ -272,6 +272,7 @@ class PNode(CognitiveNode):
             node_name=list(perception_dict.keys())[0]
             if node_name in self.activation_inputs:
                 self.activation_inputs[node_name]['data']=perception_dict[node_name]
+                # self.get_logger().info(f"(!) -- self.activation_inputs[node_name]['data'] type is {self.activation_inputs[node_name]['data']}")
                 self.activation_inputs[node_name]['updated']=True
                 self.activation_inputs[node_name]['timestamp']=Time.from_msg(msg.timestamp)
         else:

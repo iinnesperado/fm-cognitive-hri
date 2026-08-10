@@ -9,7 +9,9 @@ from core.service_client import ServiceClient, ServiceClientAsync
 from cognitive_node_interfaces.srv import GetActivation, SetActivation, Execute
 from cognitive_node_interfaces.msg import Episode
 
-from core.utils import perception_dict_to_msg, class_from_classname
+from core.utils import class_from_classname #perception_dict_to_msg
+
+from llm_planner.utils import perception_dict_to_msg
 
 class Policy(CognitiveNode):
     """

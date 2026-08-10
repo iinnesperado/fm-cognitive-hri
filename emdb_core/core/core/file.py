@@ -8,7 +8,7 @@ from cognitive_node_interfaces.msg import Activation
 from cognitive_node_interfaces.srv import SendSpace, SaveModel
 from cognitive_node_interfaces.msg import SuccessRate
 from core_interfaces.srv import GetNodeFromLTM
-from core.utils import perception_msg_to_dict, separate_perceptions
+# from core.utils import perception_msg_to_dict, separate_perceptions
 from cognitive_nodes.episodic_buffer import EpisodicBuffer
 from cognitive_nodes.episode import episode_msg_to_obj
 

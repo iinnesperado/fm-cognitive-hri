@@ -1,7 +1,9 @@
 from math import cos, sin, pi
 
 from cognitive_nodes.perception import Perception
-from core.utils import perception_dict_to_msg
+# from core.utils import perception_dict_to_msg
+from llm_planner.utils import perception_dict_to_msg
+
 
 class Sim2DPerception(Perception):
     """

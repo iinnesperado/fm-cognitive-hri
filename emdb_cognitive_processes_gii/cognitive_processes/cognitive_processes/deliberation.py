@@ -9,7 +9,9 @@ from cognitive_processes.cognitive_process import CognitiveProcess
 from core.service_client import ServiceClient
 
 from cognitive_node_interfaces.srv import AddPoints, Predict
-from core.utils import perception_dict_to_msg
+# from core.utils import perception_dict_to_msg
+from llm_planner.utils import perception_dict_to_msg
+
 
 
 class Deliberation(CognitiveProcess):
