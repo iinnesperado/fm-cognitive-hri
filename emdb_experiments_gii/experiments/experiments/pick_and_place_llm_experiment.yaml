@@ -81,12 +81,12 @@ LTM:
             #     parameters:
             #         default_msg: std_msgs.msg.Float32
             #         default_topic: /simulator/sensor/progress
-            # -
-            #     name: robot_vision
-            #     class_name: llm_planner.perception.SemanticPerception
-            #     parameters:
-            #         default_msg: sensor_msgs.msg.Image
-            #         default_topic: /simulator/sensor/robot_vision
+            -
+                name: robot_vision
+                class_name: llm_planner.perception.SemanticPerception
+                parameters:
+                    default_msg: sensor_msgs.msg.Image
+                    default_topic: /simulator/sensor/camera
 
         WorldModel:
             -
@@ -235,13 +235,13 @@ LTM:
                             """
                             Example: grasp_object("earmuffs")
 
-                            place_object(location)
+                            release_object(location)
                             """Release and place the grasped object at the given lovation. The possible options are:
                                 - slide
                                 - tray 
                                 - bin 
                             """
-                            Example: place_object("slide")
+                            Example: release_object("slide")
 
                             The task and the plan:
                             You are in charge of executing the following task: {task}. The plan is: {plan}.
@@ -269,8 +269,8 @@ DiscreteEventSimulator:
         #     perception_topic: /simulator/sensor/progress
         #     perception_msg: std_msgs.msg.Float32
         -
-            name: robot_vision
-            perception_topic: /simulator/sensor/robot_vision
+            name: camera
+            perception_topic: /simulator/sensor/camera
             perception_msg: sensor_msgs.msg.Image
 
     Objects:
