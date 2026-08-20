@@ -559,6 +559,7 @@ class MainLoop(CognitiveProcess):
                     self.current_episode.perception = reset_sensing
                     self.current_episode.ltm_state = self.LTM_cache
 
+                self.update_policies_to_test()
                 # self.update_policies_to_test(
                 #     policy=(
                 #         self.current_policy
