@@ -138,9 +138,14 @@ class MainLoop(CognitiveProcess):
         :type file_item: dict
         """
         params = file_item.get("parameters", {})
-        new_file = class_from_classname(file_item["class"])(
-            ident=file_item["id"], file_name=file_item["file"], node=self, **params
-        )
+        if file_item.get("node", None) is None:
+            new_file = class_from_classname(file_item["class"])(
+                ident=file_item["id"], file_name=file_item["file"], node=self, **params
+            )
+        else :
+            new_file = class_from_classname(file_item["class"])(
+                ident=file_item["id"], file_name=file_item["file"], node=file_item["node"], **params
+            )
         self.files.append(new_file)
 
     def update_status(self):

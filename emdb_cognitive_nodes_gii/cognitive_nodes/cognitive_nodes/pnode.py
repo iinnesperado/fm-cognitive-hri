@@ -172,7 +172,6 @@ class PNode(CognitiveNode):
         :type confidence: float
         """
         points = separate_perceptions(point)
-        self.get_logger().info(f"In PNode add_point:\n{point=}\n{points=}")
         for point in points:
             self.space = self.spaces[0]
             if not self.space:

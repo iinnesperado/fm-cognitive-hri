@@ -4,7 +4,7 @@ Experiment:
     new_executor: True
     threads: 2
     parameters: 
-        iterations: 6000
+        iterations: 30
         trials: 50
         subgoals: False
 
@@ -76,7 +76,7 @@ LTM:
                     default_msg: llm_planner_interfaces.msg.ObjectListMsg
                     default_topic: /simulator/sensor/objects
             # -
-            #     name: progress_object_in_place
+            #     name: progress_clean_workspace
             #     class_name: llm_planner.perception.SemanticPerception
             #     parameters:
             #         default_msg: std_msgs.msg.Float32
@@ -95,11 +95,11 @@ LTM:
                 
         RobotPurpose:
             -
-                name: object_in_place_mission
+                name: clean_workspace_mission
                 class_name: cognitive_nodes.robot_purpose.RobotPurpose
                 parameters:
                     weight: 1.0
-                    drive_id: 'object_in_place_drive'
+                    drive_id: 'clean_workspace_drive'
                     purpose_type: 'Mission'
                     terminal: True
             -
@@ -119,13 +119,13 @@ LTM:
 
         Drive:
             -
-                name: object_in_place_drive
-                class_name: cognitive_nodes.drive.DriveExponential
+                name: clean_workspace_drive
+                class_name: dummy_nodes.dummy_drive.DriveDummy
                 parameters:
-                    input_topic: /simulator/sensor/progress
-                    input_msg: std_msgs.msg.Float32
-                    min_eval: 0.8
-                    neighbors: [{"name": "object_in_place_mission", "node_type": "RobotPurpose"}]
+                    # input_topic: /simulator/sensor/progress
+                    # input_msg: std_msgs.msg.Float32
+                    # min_eval: 0.8
+                    neighbors: [{"name": "clean_workspace_mission", "node_type": "RobotPurpose"}]
             -
                 name: user_alignment_drive
                 class_name: user_alignment.user_alignment.DriveUserAlignment
@@ -140,10 +140,10 @@ LTM:
 
         Goal:
             # -
-            #     name: object_in_place_goal
+            #     name: clean_workspace_goal
             #     class_name: cognitive_nodes.goal.GoalMotiven
             #     parameters:
-            #         neighbors: [{"name": "object_in_place_drive", "node_type": "Drive"}]
+            #         neighbors: [{"name": "clean_workspace_drive", "node_type": "Drive"}]
             -
                 name: user_alignment_goal
                 class_name: cognitive_nodes.goal.GoalMotiven
@@ -158,12 +158,12 @@ LTM:
         PNode:
             -
                 name: user_alignment_pnode
-                class_name: dummy_nodes.dummy_pnodes.ActivatedDummyPNode
+                class_name: llm_planner.pnode.SemanticPNode
                 parameters:
                     space_class: cognitive_nodes.space.ActivatedDummySpace
             -
                 name: llm_planner_pnode
-                class_name: dummy_nodes.dummy_pnodes.ActivatedDummyPNode
+                class_name: llm_planner.pnode.SemanticPNode
                 parameters:
                     space_class: cognitive_nodes.space.ActivatedDummySpace
 
@@ -190,11 +190,12 @@ LTM:
                 parameters:
                     neighbors: [{"name": "user_alignment_cnode", "node_type": "CNode"}]
                     ltm_id: ltm_0
+                    robot_deployment: False
                     prompt: |
                         You are a robot assistant. Here is a list of possible objects on the table:
                             - mug
                             - screwdriver
-                            - clamp
+                            - clamps
                             - earmuffs
                             - blue_elec
                             - fan
@@ -239,7 +240,7 @@ LTM:
                             """Grasp the given target object and then releases it to the given location. The possible options are:
                                 - mug
                                 - screwdriver
-                                - clamp
+                                - clamps
                                 - earmuffs
                                 - blue_elec
                                 - fan
@@ -252,11 +253,10 @@ LTM:
 
                             release_object(location)
                             """Release and place the grasped object at the given lovation. The possible options are:
-                                - slide
-                                - tray 
-                                - bin 
+                                - toolbox
+                                - tray
                             """
-                            Example: release_object("slide")
+                            Example: release_object("tray")
 
                             The task and the plan:
                             You are in charge of executing the following task: {task}. The plan is: {plan}.
@@ -280,7 +280,7 @@ DiscreteEventSimulator:
             perception_topic: /simulator/sensor/objects
             perception_msg: llm_planner_interfaces.msg.ObjectListMsg
         -
-            name: progress_object_in_place
+            name: progress_clean_workspace
             perception_topic: /simulator/sensor/progress
             perception_msg: std_msgs.msg.Float32
         -
