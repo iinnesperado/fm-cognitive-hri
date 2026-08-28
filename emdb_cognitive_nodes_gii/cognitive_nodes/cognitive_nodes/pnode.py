@@ -135,7 +135,7 @@ class PNode(CognitiveNode):
         confidence = request.confidence
         point = perception_msg_to_dict(self.point_msg)
         self.add_point(point,confidence)
-        self.get_logger().info('Adding point: ' + str(point) + 'Confidence: ' + str(confidence))
+        self.get_logger().info('Adding point: ' + str(point) + ' Confidence: ' + str(confidence))
         response.added = True
 
         return response

@@ -106,7 +106,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "experiment_file",
-            default_value="pick_and_place_llm_experiment.yaml",
+            default_value="franka_experiment.yaml",
             description="The file that loads the experiment config",
         )
     )
