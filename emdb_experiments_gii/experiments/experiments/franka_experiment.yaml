@@ -211,16 +211,17 @@ LTM:
                 name: llm_planner_policy
                 class_name: llm_planner.policy_llm_planner.PolicyLLMPlanner
                 parameters:
-                    llm_model_name: "llama3.2"
+                    llm_model_name: "llama3.1"
                     neighbors: [{"name": "llm_planner_cnode", "node_type": "CNode"}]
                     ltm_id: ltm_0
                     executed_primitive_service: /simulator/executed_policy
                     prompts :
                         high_level_prompt: |
-                            You are in charge of a fixed robotic arm ending in a gripper. Your task is the following: {task}
-                            Please output a plan, composed of a grasp action and a place action, to carry out this task. You can assume that simple actions (such as grasping or handing objects) automatically move the arm to the correct position, so avoid actions such as 'move to...'.
+                            You are in charge of a fixed robotic arm ending in a gripper. Your job is to output a pick-and-place plan to complete the following task: {task}
+                            The plan has to be composed of a grasp action and a place action, to carry out this task. You can assume that simple actions (such as grasping or handing objects) automatically move the arm to the correct position, so do not use actions such as 'move to...'. Complete the following template:
+                            '(Grasp the [object], Place it on [location])'
 
-                            Please only output the plan as a tuple of strings, where each step is a string. And output no other text. And check that the outputed action plan is in the right order.
+                            Please only output the plan as a tuple of strings, where each step is a string. And output no other text.
                             
                         outcome_prompt: |
                             You are in charge of executing the following task: {task}. The plan consists of the following steps: {plan}. Each of the steps of the plan will be executed with a mobile robot equipped with an arm ending in a gripper. For each step of the plan, I need you to give the expected outcome of the actions involved in the step, in physical and visual terms.
